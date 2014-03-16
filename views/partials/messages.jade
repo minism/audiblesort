@@ -1,0 +1,6 @@
+div.messages
+  for message in messages
+    div(class="alert alert-#{ message.type }")
+      i(class="icon-#{ message.icon }")&nbsp;
+      button.close(type="button", data-dismiss="alert") x
+      | #{ message.text }

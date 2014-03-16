@@ -1,0 +1,20 @@
+{
+  "name": "audiblesort",
+  "version": "0.0.0",
+  "authors": [
+    "josh <joshbothun@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Audiolet": "*",
+    "jquery": "~2.1.0"
+  }
+}
