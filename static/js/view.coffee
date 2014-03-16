@@ -1,5 +1,5 @@
-# Simple view to render the current state
-class exports.View
+# Simple view to render the current state using DOM+CSS
+class exports.DOMView
   constructor: (@container) ->
     @bars = []
     @data_length = 1
