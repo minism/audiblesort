@@ -3,14 +3,15 @@ view = require './view.coffee'
 sound = require './sound.coffee'
 
 
-SPEED = 5
+SPEED = 0.1
 SIZE = 50
 
 
 class Application
   constructor: ->
     # Setup all subsystems
-    @sorter = new sorters.SelectionSorter SIZE, SPEED
+    sortclass = window.location.hash and sorters.InsertionSorter or sorters.SelectionSorter
+    @sorter = new sortclass SIZE, SPEED
     @view = new view.DOMView $('#app')
     @sound = new sound.SoundController SPEED
 

@@ -44,11 +44,15 @@ class BaseSorter
   # between different subsystems (audio, view, ...)
   getState: ->
     state =
-      data: @data
+      data: @getData()
       compare_a: @compare_a
       compare_b: @compare_b
       complete: @complete
       sorted: @sorted
+
+  # Get the data representation for this sorter
+  getData: ->
+    @data
 
   # This should be implemented for each sorter
   _iterate: ->
@@ -66,7 +70,7 @@ class BaseSorter
 
 class exports.SelectionSorter extends BaseSorter
   constructor: (args...) ->
-    super(args...)
+    super args...
     @sorted_index = 0
 
   _iterate: ->
@@ -87,3 +91,36 @@ class exports.SelectionSorter extends BaseSorter
       @_swap(@compare_a, @sorted_index)
       @sorted.push @sorted_index++
       @compare_a = null
+
+
+class exports.InsertionSorter extends BaseSorter
+  constructor: (args...) ->
+    super args...
+    @compare_a = @compare_b = 0
+
+  # Remove value from 'from' index, inserting at 'to' index and shifting everything upwards. 
+  _insert: (from, to) ->
+    tmp = @data[from]
+    for i in [from..to+1]
+      @data[i] = @data[i-1]
+    @data[to] = tmp
+
+  _iterate: ->
+    # No comparison base, start next scan
+    if @compare_a >= @data.length
+      complete = true
+      @sorted = [0..@data.length-1]
+
+    # Active scan
+    else if @compare_b < @compare_a
+      if @data[@compare_a] < @data[@compare_b]
+        @_insert(@compare_a++, @compare_b)
+        @compare_b = 0
+      else
+        @compare_b++
+
+    # Already in correct order
+    else
+      @compare_a++
+      @compare_b = 0
+

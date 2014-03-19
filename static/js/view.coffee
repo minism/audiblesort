@@ -42,12 +42,12 @@ class exports.DOMView
     for i in [0..@data_length-1]
       height = state.data[i] / @data_length
       @negatives[i].height "#{100 - height * 100}%"
-      @bars[i].css 'background-color', 'white'
+      @bars[i].css 'background-image', 'linear-gradient(to right, #FFFFFF, #BBBBBB)'
 
     # Color significant indices
-    if state.compare_a?
-      @bars[state.compare_a].css 'background-color', 'rgb(255, 0, 0)'
-    if state.compare_b and state.compare_b != state.compare_a
-      @bars[state.compare_b].css 'background-color', 'rgb(255, 100, 100)'
     for index in state.sorted
-      @bars[index].css 'background-color', 'green'
+      @bars[index].css 'background-image', 'linear-gradient(to right, #00FF00, #00BB00)'
+    if state.compare_a? and state.compare_a < @data_length
+      @bars[state.compare_a].css 'background-image', 'linear-gradient(to right, #FF0000, #BB0000)'
+    if state.compare_b? and state.compare_b != state.compare_a and state.compare_b < @data_length
+      @bars[state.compare_b].css 'background-image', 'linear-gradient(to right, #FF6666, #BB2222)'
