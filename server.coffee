@@ -1,4 +1,5 @@
 {exec}      = require 'child_process'
+fs          = require 'fs'
 express     = require 'express'
 http        = require 'http'
 path        = require 'path'
@@ -79,15 +80,15 @@ require('./controllers')(app)
 # For now, run browserify on every startup
 # TODO: come up with a cleaner solution for this and put it in template
 compile_js = (callback)->
-  console.log "Compiling client-side js..."
-  browserify = path.join __dirname, 'node_modules', '.bin', 'browserify'
-  exec "#{browserify} -t coffeeify -o #{BUILD_PATH}/app.js #{STATIC_PATH}/js/app.coffee", callback
+  fs.mkdir BUILD_PATH, ->
+    console.log "Compiling client-side js..."
+    browserify = path.join __dirname, 'node_modules', '.bin', 'browserify'
+    exec "#{browserify} -t coffeeify -o #{BUILD_PATH}/app.js #{STATIC_PATH}/js/app.coffee", callback
 
 compile_js (error, stdout, stderr) ->
   if error
     console.log "ERROR compiling client-side javascript\n #{stderr}"
-
-
-# Boot HTTP server
-http.createServer(app).listen app.get('port'), ->
-  console.log "Listening on port #{ app.get('port') }..."
+  else
+    # Boot HTTP server
+    http.createServer(app).listen app.get('port'), ->
+      console.log "Listening on port #{ app.get('port') }..."
