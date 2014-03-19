@@ -4,7 +4,7 @@ sound = require './sound.coffee'
 
 
 SPEED = 5
-SIZE = 100
+SIZE = 50
 
 
 class Application
@@ -12,7 +12,7 @@ class Application
     # Setup all subsystems
     @sorter = new sorters.SelectionSorter SIZE, SPEED
     @view = new view.DOMView $('#app')
-    @sound = new sound.SoundController
+    @sound = new sound.SoundController SPEED
 
     # Keep track of last timestamp for dt calculation
     @ts = 0
